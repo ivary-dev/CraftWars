@@ -1,0 +1,9 @@
+name: CraftWars
+main: com.ivary.main.CraftWars
+version: 1.0
+api-version: 1.16
+commands:
+  craftwars:
+    description: This is used to start and stop CraftWars
+    aliases:
+      - cw
