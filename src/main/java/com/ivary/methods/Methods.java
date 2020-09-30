@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.scoreboard.Team;
 
 import java.util.Random;
 
@@ -52,10 +53,30 @@ public class Methods {
         Bukkit.broadcastMessage(cC("&8[&bCW&8] CraftWars is over!"));
     }
 
+    public void stopCraftWarsManual() {
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            Teams.instance.getCrafted().removeEntry(p.getName());
+            Teams.instance.getNotCrafted().removeEntry(p.getName());
+            CraftWars.instance.getPlayerCraft().clear();
+            p.setGlowing(false);
+            p.sendTitle(cC("&cCraftWars was manually stopped!"), cC("&7We apologise"), 20, 60, 20);
+        }
+        Bukkit.broadcastMessage(cC("&8[&bCW&8] CraftWars is over!"));
+    }
+
     public Location stringToLoc(String s){
         String[] str = s.split(",");
         String[] worldPlusZ = str[2].split(" ");
         Location loc = new Location(Bukkit.getWorld(worldPlusZ[1]), Integer.parseInt(str[0]), Integer.parseInt(str[1]), Integer.parseInt(worldPlusZ[0]));
         return loc;
+    }
+
+    public void removePlayer(Team team, Player p) {
+        for (String s : team.getEntries()) {
+            if (s.equalsIgnoreCase(p.getName())) {
+                team.removeEntry(p.getName());
+            }
+        }
     }
 }

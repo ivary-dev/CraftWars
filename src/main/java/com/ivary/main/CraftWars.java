@@ -7,8 +7,10 @@ import com.ivary.listeners.Damaging;
 import com.ivary.listeners.Joining;
 import com.ivary.methods.Methods;
 import com.ivary.methods.Teams;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,16 +43,17 @@ public class CraftWars extends JavaPlugin {
         saveConfig();
         cfile = new File(getDataFolder(), "config.yml");
         loadConfig();
-        this.getServer().getScheduler().runTaskLater(this, new Runnable() {
-            public void run() {
-                Teams.instance.initTeams();
-            }
-        }, 0);
+        Teams teams = new Teams();
+        teams.initTeams();
+        World world = Bukkit.getWorld("world");
+        world.setAutoSave(false);
     }
 
 
     public void onDisable() {
         instance = null;
+        Bukkit.getServer().unloadWorld("world", true);
+        Bukkit.getServer().reload();
     }
 
 
